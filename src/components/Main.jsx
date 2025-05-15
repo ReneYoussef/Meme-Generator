@@ -1,4 +1,4 @@
-import { useState } from "react"; // {} to destructure the use state
+import { useState, useEffect } from "react"; // {} to destructure the use state
 
 export default function Main() {
   const [meme, setMem] = useState({
@@ -8,9 +8,20 @@ export default function Main() {
     bottomText: "Walk into Mordor",
   });
 
+  const [allmeme,setAllMemes] =useState([])
+  useEffect(function () {
+    console.log("effect Ran");
+    fetch("https://api.imgflip.com/get_memes")
+      .then((res) => res.json())
+      .then((data) => {
+        setAllMemes(data.data.meme);
+      })
+      .catch((err) => console.error("Error fetching memes:", err));
+  }, []);
+
   function handleChange(event) {
-    //event listner
-    const { value ,name } = event.currentTarget;
+    //event listner that reflect the respective pieces of state depending on the name of the input fields
+    const { value, name } = event.currentTarget;
     setMem((prevMeme) => ({
       ...prevMeme,
       [name]: value,
