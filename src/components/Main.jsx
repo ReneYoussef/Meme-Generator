@@ -14,10 +14,22 @@ export default function Main() {
     fetch("https://api.imgflip.com/get_memes")
       .then((res) => res.json())
       .then((data) => {
-        setAllMemes(data.data.meme);
+        setAllMemes(data.data.memes);
       })
       .catch((err) => console.error("Error fetching memes:", err));
   }, []);
+
+  function GetRandomImage(){
+    //get a random number from 0 to array.length
+    const randomNumber = Math.floor(Math.random() * allmeme.length)
+    //get random number to get random meme
+    const newMemeUrl = allmeme[randomNumber].url
+    setMem(prevMeme => ({
+  ...prevMeme,
+  imgUrl: newMemeUrl
+}));
+
+  }
 
   function handleChange(event) {
     //event listner that reflect the respective pieces of state depending on the name of the input fields
@@ -27,6 +39,9 @@ export default function Main() {
       [name]: value,
     }));
   }
+
+  
+//11h 15min 40s
 
   return (
     <main>
@@ -52,7 +67,7 @@ export default function Main() {
           />
         </label>
 
-        <button>Get a New Meme Image</button>
+        <button on onClick={GetRandomImage}>Get a New Meme Image</button>
       </div>
 
       <div className="meme">
